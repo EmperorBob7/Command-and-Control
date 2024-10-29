@@ -1,0 +1,102 @@
+.blocked {
+    opacity: 0.5;
+    user-select: none;
+}
+
+.blocked input {
+    display: none;
+}
+
+.terminal {
+    width: 600px;
+    max-width: 100%;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    margin: auto;
+}
+
+.terminal-header {
+    display: flex;
+    align-items: center;
+    background-color: #444;
+    padding: 0.5em;
+    color: #eee;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.buttons {
+    display: flex;
+    gap: 1vw;
+}
+
+.button {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.close {
+    background-color: #ff5f57;
+}
+
+.minimize {
+    background-color: #ffbd2e;
+}
+
+.maximize {
+    background-color: #28c940;
+}
+
+.title {
+    margin-left: auto;
+    font-weight: bold;
+}
+
+.terminal-body {
+    padding: 12px;
+    color: #e5e5e5;
+}
+
+.output {
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.output::-webkit-scrollbar {
+    width: 15px;
+}
+
+.output::-webkit-scrollbar-track {
+    background: #777;
+    border-radius: 25px;
+}
+
+.output::-webkit-scrollbar-thumb {
+    background-color: #222;
+    border-radius: 25px;
+}
+
+.output::-webkit-scrollbar-thumb:hover {
+    background-color: #111;
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+}
+
+.prompt {
+    color: #00ff00;
+    margin-right: 8px;
+    transform: translateY(-1vh);
+}
+
+#terminalInput {
+    background: none;
+    border: none;
+    outline: none;
+    color: #e5e5e5;
+    flex-grow: 1;
+}

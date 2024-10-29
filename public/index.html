@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>C2</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='index.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='terminal.css'>
+</head>
+
+<body>
+    <h1> Command and Control </h1>
+
+    <div id="passwordDiv">
+        <div>
+            <label>Password</label>
+            <input type="password" id="passwordInput" placeholder="e.g., bobJones1387" required>
+        </div>
+    </div>
+
+    <div id="ipTable">
+        <!-- <div>
+            <label>127.0.0.1</label>
+            <button id="connectButton0">Connect</button>
+        </div> -->
+    </div>
+
+    <form id="ipForm">
+
+    </form>
+
+    <div class="terminal blocked">
+        <div class="terminal-header">
+            <div class="buttons">
+                <span class="button close"></span>
+                <span class="button minimize"></span>
+                <span class="button maximize"></span>
+            </div>
+            <span class="title">Terminal</span>
+        </div>
+        <div class="terminal-body">
+            <div id="output" class="output">
+                <p>Welcome to the Browser Terminal</p>
+                <p class="input-line">
+                    <span class="prompt">$</span>
+                    <input type="text" id="terminalInput" autofocus>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src='index.js'></script>
+</body>
+
+</html>
