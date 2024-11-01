@@ -62,6 +62,10 @@ button:hover {
     background-color: var(--green-dark);
 }
 
+button:active {
+    background-color: #222233;
+}
+
 /* Password Input */
 #passwordDiv {
     display: flex;

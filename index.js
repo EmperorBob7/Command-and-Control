@@ -20,14 +20,6 @@ io.on('connection', function (socket) {
         io.emit("socketList", socketList);
     }
 
-    // Listener send command to Source
-    socket.on('command', function (data) {
-        if (socketRoom != "listener" || connectedSource == null) {
-            return;
-        }
-        socket.to(connectedSource).emit("Sus!");
-    });
-
     socket.on("joinRoom", (role, name, password) => {
         if (!role || !name || name.includes("-")) {
             console.log("Failed Connection");
@@ -60,6 +52,25 @@ io.on('connection', function (socket) {
         }
         socketList.splice(index, 1);
         updatedSocketList();
+    });
+
+    socket.on("connectToServer", (id) => {
+        if(!id || id.length == 0) {
+            return; // Invalid ID and/or Password
+        }
+        let serv = null;
+        for(let i = 0; i < socketList.length; i++) {
+            if(socketList[i] == id) {
+                serv = socketList[i];
+                break;
+            }
+        }
+        if(serv == null) {
+            return; // Invalid ID
+        }
+        console.log(`Attempt connection to ${serv}`);
+        serv = serv.substring(0, serv.indexOf("-"));
+        io.to(serv).emit("connectionRequest", socket.id);
     });
 });
 

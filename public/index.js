@@ -5,6 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
     socket.emit("joinRoom", "listener", "Client");
 });
 
+function connectToServer(id) {
+    const fileInput = document.getElementById("fileInput");
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const passwd = event.target.result;
+            socket.emit("connectToServer", id);
+        };
+        reader.readAsText(file);
+    } else {
+        console.error("No file selected");
+    }
+}
+
 // Listen for messages from the server
 socket.on("broad", (msg) => {
     alert(msg);
@@ -25,16 +40,10 @@ socket.on("socketList", (msg) => {
         const button = document.createElement("button");
         button.innerText = "Connect";
         button.id = `connectButton${i}`;
-        button.addEventListener("click", () => { sendMessage(id); });
-        
+        button.addEventListener("click", () => { connectToServer(id); });
+
         div.appendChild(label);
         div.appendChild(button);
         ipTable.appendChild(div);
     }
 });
-
-// Send a message to the server
-function sendMessage(id) {
-    const passwd = document.getElementById("passwordInput").value;
-    socket.emit("message", passwd);
-}
