@@ -15,7 +15,7 @@
         <div id="fileUploadDiv">
             <div>
                 <label for="fileInput">Upload Private Key</label>
-                <input type="file" id="fileInput" required />
+                <input type="file" id="fileInput" accept=".pem" required/>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
 
         <form id="ipForm"></form>
 
-        <div class="terminal blocked">
+        <div class="terminal blocked" id="terminalContainer">
             <div class="terminal-header">
                 <div class="buttons">
                     <span class="button close"></span>
@@ -37,12 +37,12 @@
                     <p>Welcome to the Browser Terminal</p>
                     <p class="input-line">
                         <span class="prompt">$</span>
-                        <input type="text" id="terminalInput" autofocus />
+                        <input type="text" id="terminalInput" autofocus placeholder="ls"/>
                     </p>
                 </div>
             </div>
         </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/node-forge@1.0.0/dist/forge.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="index.js"></script>
     </body>

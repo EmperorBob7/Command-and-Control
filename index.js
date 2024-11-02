@@ -14,13 +14,12 @@ const socketList = [];
 // Listeners are the clients
 io.on('connection', function (socket) {
     let socketID = null;
-    let connectedSource = null;
     let socketRoom = null;
     function updatedSocketList() {
         io.emit("socketList", socketList);
     }
 
-    socket.on("joinRoom", (role, name, password) => {
+    socket.on("joinRoom", (role, name) => {
         if (!role || !name || name.includes("-")) {
             console.log("Failed Connection");
             return;
@@ -56,7 +55,7 @@ io.on('connection', function (socket) {
 
     socket.on("connectToServer", (id) => {
         if(!id || id.length == 0) {
-            return; // Invalid ID and/or Password
+            return socket.emit("message", "Bad Args");
         }
         let serv = null;
         for(let i = 0; i < socketList.length; i++) {
@@ -66,11 +65,36 @@ io.on('connection', function (socket) {
             }
         }
         if(serv == null) {
-            return; // Invalid ID
+            return socket.emit("message", "Invalid ID");
         }
         console.log(`Attempt connection to ${serv}`);
         serv = serv.substring(0, serv.indexOf("-"));
         io.to(serv).emit("connectionRequest", socket.id);
+    });
+
+    socket.on("encryptedChallenge1", (id, challenge) => {
+        if(!id || id.length == 0 || !challenge) {
+            return socket.emit("message", "Bad Args");
+        }
+        io.to(id).emit("encryptedChallenge2", socket.id, challenge);
+    });
+
+    socket.on("decrypted1", (socketID, decrypted) => {
+        if(!socketID || !decrypted) {
+            return socket.emit("message", "Bad Args");
+        }
+        io.to(socketID).emit("decrypted2", socket.id, decrypted);
+    });
+
+    socket.on("symmetric1", (socketID, encryptedAES) => {
+        if(!socketID || !encryptedAES) {
+            return socket.emit("message", "Bad Args");
+        }
+        io.to(socketID).emit("symmetric2", socket.id, encryptedAES);
+    });
+
+    socket.on("rejectFromServer", (id, msg) => {
+        io.to(id).emit("message", msg);
     });
 });
 
