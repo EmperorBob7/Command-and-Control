@@ -6,9 +6,10 @@ const crypto = require('crypto'); // Import the crypto module
 const { exec } = require('child_process');
 
 const socket = io(`${process.env.IP}`);
-console.log(`Connect to ${process.env.IP}:${process.env.PORT}`);
+console.log(`Connect to ${process.env.IP}`);
 let publicKey, symmetricKey = null;
 let connected = false;
+let connectedSocketID = null;
 try {
     publicKey = fs.readFileSync(process.env.PUBLIC_FILE, 'utf8');
 } catch (error) {
@@ -42,6 +43,7 @@ socket.on("decrypted2", (socketID, decrypted) => {
         return socket.emit('rejectFromServer', "Failed Decryption");
     }
     connected = true;
+    connectedSocketID = socketID;
     const key = crypto.randomBytes(32); // 32 bytes for AES-256
     const keyBase64 = key.toString('base64'); // base64 for sharing
     const encryptedAES = encryptChallenge(keyBase64);
@@ -99,8 +101,15 @@ function encryptAES(plaintext) {
     };
 }
 
-// let challenge = crypto.publicEncrypt(publicKey, Buffer.from("SUS"));
-// console.log(challenge);
-// let privateKey = fs.readFileSync("./privateKey.pem", "utf8");
-// console.log(crypto.privateDecrypt(privateKey, challenge).toString());
+socket.on("pingResponse", (isConnected) => {
+    connected = isConnected;
+});
 
+const interval = setInterval(() => {
+    console.log("Timeout Test");
+    if(!connected) {
+        process.exit(1);
+    } else {
+        socket.emit("pingID", connectedSocketID);
+    }
+}, 15000);
