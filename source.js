@@ -14,7 +14,7 @@ try {
     publicKey = fs.readFileSync(process.env.PUBLIC_FILE, 'utf8');
 } catch (error) {
     console.error("Error reading public key:", error);
-    exit();
+    process.exit(1);
 }
 
 let lastChallenge = null;
