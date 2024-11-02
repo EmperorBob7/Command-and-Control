@@ -107,10 +107,15 @@ socket.on("symmetric2", (socketID, encryptedAES) => {
             input.value = '';
             let encrypted = encryptAES(inputValue);
             console.log(encrypted);
-            let decrypted = decryptAES(encrypted.ciphertext, encrypted.iv);
-            console.log(decrypted);
+            socket.emit("command", connectedSocketID, encrypted);
         }
     });
+});
+
+socket.on("result", (socketID, encrypted) => {
+    const decrypted = decryptAES(encrypted.ciphertext, encrypted.iv);
+    const results = decrypted.data;
+    document.getElementById("commandOutput").innerText = results;
 });
 
 socket.on("message", (msg) => {

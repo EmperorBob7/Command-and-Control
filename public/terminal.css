@@ -98,5 +98,11 @@
     border: none;
     outline: none;
     color: #e5e5e5;
-    flex-grow: 1;
+    background-color: #333;
+    width: 90%;
+}
+
+#commandOutput {
+    text-align: left;
+    font-size: smaller;
 }
