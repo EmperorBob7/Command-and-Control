@@ -5,7 +5,7 @@ const io = require("socket.io-client");
 const crypto = require('crypto'); // Import the crypto module
 const { exec } = require('child_process');
 
-const socket = io(`${process.env.IP}:${process.env.PORT}`);
+const socket = io(`${process.env.IP}`);
 console.log(`Connect to ${process.env.IP}:${process.env.PORT}`);
 let publicKey, symmetricKey = null;
 let connected = false;

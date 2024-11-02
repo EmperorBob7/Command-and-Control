@@ -20,11 +20,11 @@ io.on('connection', function (socket) {
     }
 
     socket.on("joinRoom", (role, name) => {
-        if (!role || !name || name.includes("-")) {
+        if (!role || !name || name.includes("@")) {
             console.log("Failed Connection");
             return;
         }
-        socketID = socket.id + "-" + name;
+        socketID = socket.id + "@" + name;
         if (role === "source") {
             socketRoom = role;
             console.log(`Socket ${socketID} joined as a source.`);
@@ -68,7 +68,7 @@ io.on('connection', function (socket) {
             return socket.emit("message", "Invalid ID");
         }
         console.log(`Attempt connection to ${serv}`);
-        serv = serv.substring(0, serv.indexOf("-"));
+        serv = serv.substring(0, serv.indexOf("@"));
         io.to(serv).emit("connectionRequest", socket.id);
     });
 
