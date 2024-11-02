@@ -1,1 +1,2 @@
-node /home/user/Command-and-Control-main/source.js
+cd /home/user/Command-and-Control-main/
+node ./source.js
